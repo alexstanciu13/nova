@@ -1,153 +1,89 @@
 "use client";
 
-import { MessageSquare, Wand2, Globe } from "lucide-react";
-import SectionHeader from "@/components/SectionHeader";
+import { motion } from "framer-motion";
+import { Wand2, Layout, Rocket } from "lucide-react";
 
 const steps = [
   {
-    step: "01",
-    icon: MessageSquare,
-    title: "Descrie-ți afacerea",
+    icon: Layout,
+    title: "Descrie afacerea",
     description:
-      "Spune-i lui nova ce faci — restaurant, cabinet medical, salon, servicii. Alegi o categorie sau scrii cu propriile cuvinte. Fără formulare complicate.",
-    visual: (
-      <div className="bg-[#EEF2FF] rounded-xl p-4">
-        <div className="bg-white rounded-lg p-3 shadow-sm border border-[#EEF2FF]">
-          <p className="text-xs text-[#6B7A9A] mb-2" style={{ fontFamily: "var(--font-body)" }}>
-            Descrie afacerea ta:
-          </p>
-          <div className="bg-[#EEF2FF] rounded-lg p-2.5 text-xs text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
-            &ldquo;Restaurant italian în Cluj-Napoca, specialitate pizza și paste. Livrăm și acasă.&rdquo;
-          </div>
-          <div className="flex gap-2 mt-2">
-            {["Restaurant", "Delivery", "Cluj"].map((tag) => (
-              <span key={tag} className="bg-[#0D1F5C]/10 text-[#0D1F5C] text-xs px-2 py-0.5 rounded-full font-medium">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    ),
+      "Răspunde la câteva întrebări simple despre afacerea ta. Nu ai nevoie de texte pregătite.",
   },
   {
-    step: "02",
     icon: Wand2,
-    title: "nova generează site-ul complet",
+    title: "AI Generează",
     description:
-      "AI-ul nostru creează automat un website WordPress complet: design, pagini, texte, meniu, galerie, formulare de contact — personalizat pentru afacerea ta.",
-    visual: (
-      <div className="bg-[#0D1F5C]/5 rounded-xl p-4 space-y-2">
-        {["✓ Design personalizat", "✓ 5+ pagini generate", "✓ Texte SEO-ready", "✓ Galerie foto", "✓ Formular contact"].map(
-          (item) => (
-            <div key={item} className="flex items-center gap-2 text-xs text-[#0D1F5C] font-medium" style={{ fontFamily: "var(--font-body)" }}>
-              <div className="w-4 h-4 bg-[#00C2FF] rounded-full flex items-center justify-center text-[8px] text-[#0D1F5C] font-bold">✓</div>
-              {item.slice(2)}
-            </div>
-          )
-        )}
-        <div className="pt-1">
-          <div className="flex items-center gap-2">
-            <div className="h-1.5 bg-[#00C2FF] rounded-full flex-1 overflow-hidden">
-              <div className="h-full bg-[#0051CC] rounded-full animate-pulse" style={{ width: "90%" }} />
-            </div>
-            <span className="text-[#00C2FF] text-xs font-mono font-semibold" style={{ fontFamily: "var(--font-mono)" }}>
-              90%
-            </span>
-          </div>
-        </div>
-      </div>
-    ),
+      "Nova construiește structura, scrie textele și alege imaginile potrivite în mai puțin de 60 de secunde.",
   },
   {
-    step: "03",
-    icon: Globe,
-    title: "Publică și conectează domeniul",
+    icon: Rocket,
+    title: "Publică instant",
     description:
-      "Un click și site-ul e live. Conectezi propriul domeniu sau cumperi unul nou direct din nova. Site-ul tău e online în câteva minute.",
-    visual: (
-      <div className="bg-[#EEF2FF] rounded-xl p-4">
-        <div className="bg-white rounded-lg p-3 shadow-sm border border-[#EEF2FF] space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-              Domeniu
-            </span>
-            <span className="text-xs text-[#00C2FF] font-semibold" style={{ fontFamily: "var(--font-mono)" }}>
-              ● LIVE
-            </span>
-          </div>
-          <div className="bg-[#EEF2FF] rounded-md px-3 py-2 flex items-center gap-2">
-            <div className="w-4 h-4 bg-[#0051CC] rounded-full flex items-center justify-center">
-              <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
-                <path d="M1 5.5L4 8.5L9 2" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </div>
-            <span className="text-xs text-[#0D1F5C] font-mono" style={{ fontFamily: "var(--font-mono)" }}>
-              restaurantulmeu.ro
-            </span>
-          </div>
-          <p className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-            SSL activat • Hosting inclus • CDN activ
-          </p>
-        </div>
-      </div>
-    ),
+      "Conectează domeniul tău sau folosește unul gratuit. Site-ul tău e live și gata de clienți.",
   },
 ];
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-20 lg:py-28 bg-white">
+    <section
+      id="how-it-works"
+      className="py-24 bg-white relative border-t border-[#EEF2FF]"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Cum funcționează"
-          title="De la idee la site live în 3 pași"
-          subtitle="Fără cunoștințe tehnice. Fără programatori. Nova face totul pentru tine."
-        />
+        <div className="text-center mb-16">
+          <h2
+            className="text-3xl md:text-5xl font-bold mb-6 text-[#0D1F5C]"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+          >
+            E complicat de folosit? <br />
+            <span className="text-[#0051CC]">Deloc.</span>
+          </h2>
+          <p
+            className="text-xl text-[#6B7A9A] max-w-2xl mx-auto"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            Am eliminat tot jargonul tehnic. Dacă știi să trimiți un email, știi
+            să folosești Nova.
+          </p>
+        </div>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <div key={step.step} className="relative">
-                {/* Connector line */}
-                {i < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-10 left-[calc(100%+0px)] w-full h-0.5 bg-gradient-to-r from-[#00C2FF]/40 to-transparent z-0" />
-                )}
-                <div className="relative z-10">
-                  {/* Step number */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-[#0D1F5C] rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Icon size={18} className="text-[#00C2FF]" />
-                    </div>
-                    <span
-                      className="text-4xl font-extrabold text-[#EEF2FF]"
-                      style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}
-                    >
-                      {step.step}
-                    </span>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          {/* Connecting Line (Desktop only) */}
+          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 border-t border-dashed border-[#0051CC]/20" />
 
-                  {/* Visual */}
-                  <div className="mb-5">{step.visual}</div>
-
-                  {/* Text */}
-                  <h3
-                    className="text-lg font-bold text-[#0D1F5C] mb-2"
-                    style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p
-                    className="text-[#6B7A9A] text-sm leading-relaxed"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  >
-                    {step.description}
-                  </p>
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="relative flex flex-col items-center text-center group"
+            >
+              <div className="w-24 h-24 rounded-2xl bg-[#EEF2FF] border border-[#0D1F5C]/10 flex items-center justify-center mb-8 relative z-10 group-hover:border-[#00C2FF]/60 transition-colors shadow-sm">
+                <step.icon
+                  className="w-10 h-10 text-[#0D1F5C] group-hover:text-[#0051CC] transition-colors"
+                />
+                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-[#0051CC] flex items-center justify-center font-mono font-bold text-sm text-white border-2 border-white shadow-sm">
+                  {index + 1}
                 </div>
               </div>
-            );
-          })}
+
+              <h3
+                className="text-xl font-bold text-[#0D1F5C] mb-4"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+              >
+                {step.title}
+              </h3>
+              <p
+                className="text-[#6B7A9A] leading-relaxed max-w-xs"
+                style={{ fontFamily: "var(--font-body)" }}
+              >
+                {step.description}
+              </p>
+            </motion.div>
+          ))}
         </div>
 
         {/* CTA */}
@@ -159,7 +95,10 @@ export default function HowItWorksSection() {
           >
             Creează primul meu site →
           </a>
-          <p className="text-[#6B7A9A] text-sm mt-3" style={{ fontFamily: "var(--font-body)" }}>
+          <p
+            className="text-[#6B7A9A] text-sm mt-3"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
             Gratuit 14 zile • Fără card obligatoriu
           </p>
         </div>
