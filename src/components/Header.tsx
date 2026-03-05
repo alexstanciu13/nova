@@ -36,9 +36,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 lg:h-18">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <NovaIcon size={32} variant="dark" />
+            <NovaIcon size={32} variant={isScrolled ? "dark" : "light"} />
             <span
-              className="text-[#0D1F5C] font-display font-800 text-xl tracking-tight"
+              className={`font-display font-800 text-xl tracking-tight transition-colors ${isScrolled ? "text-[#0D1F5C]" : "text-white"}`}
               style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.03em" }}
             >
               nova
@@ -51,7 +51,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[#6B7A9A] hover:text-[#0D1F5C] font-body text-sm font-medium transition-colors"
+                className={`font-body text-sm font-medium transition-colors ${isScrolled ? "text-[#6B7A9A] hover:text-[#0D1F5C]" : "text-white hover:text-white/80"}`}
                 style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
               >
                 {link.label}
@@ -63,7 +63,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-3">
             <Link
               href="/login"
-              className="text-[#0D1F5C] hover:text-[#0051CC] font-body text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+              className={`font-body text-sm font-medium px-4 py-2 rounded-lg transition-colors ${isScrolled ? "text-[#0D1F5C] hover:text-[#0051CC]" : "text-white hover:text-white/80"}`}
               style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
             >
               Autentificare
@@ -80,7 +80,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-[#0D1F5C] rounded-lg hover:bg-[#EEF2FF] transition-colors"
+            className={`lg:hidden p-2 rounded-lg transition-colors ${isScrolled ? "text-[#0D1F5C] hover:bg-[#EEF2FF]" : "text-white hover:bg-white/10"}`}
             aria-label="Deschide meniu"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
