@@ -20,7 +20,7 @@ const channels = [
     desc: "Disponibil în platformă pentru clienți activi",
     value: "Chat în dashboard",
     action: "Deschide chat",
-    href: "/login",
+    href: "https://my.trynova.ro/login",
     time: "Răspuns în ~2h",
   },
   {
