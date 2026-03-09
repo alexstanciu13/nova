@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Check, Users, TrendingUp, BarChart3, Layout, FileText, Headphones } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import EarningsCalculator from "@/components/partners/EarningsCalculator";
+import PartnersForm from "@/components/partners/PartnersForm";
 
 export const metadata: Metadata = {
   title: "Parteneri & Agenții — Câștigă venituri recurente cu nova",
@@ -225,116 +226,7 @@ export default function PartnersPage() {
             title="Vrei să devii partener nova?"
             subtitle="Completează formularul și te contactăm în 24h cu detalii despre program și comisioane."
           />
-          <form className="mt-10 space-y-4 bg-white rounded-2xl p-8 border border-[#EEF2FF] shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label
-                  className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-                >
-                  Prenume și Nume *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Ion Popescu"
-                  className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                  style={{ fontFamily: "var(--font-body)" }}
-                />
-              </div>
-              <div>
-                <label
-                  className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-                >
-                  Agenție / Companie
-                </label>
-                <input
-                  type="text"
-                  placeholder="Agenția Ta SRL"
-                  className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                  style={{ fontFamily: "var(--font-body)" }}
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-              >
-                Email *
-              </label>
-              <input
-                type="email"
-                required
-                placeholder="ion@agentia-ta.ro"
-                className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                style={{ fontFamily: "var(--font-body)" }}
-              />
-            </div>
-            <div>
-              <label
-                className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-              >
-                Telefon *
-              </label>
-              <input
-                type="tel"
-                required
-                placeholder="+40 7XX XXX XXX"
-                className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                style={{ fontFamily: "var(--font-body)" }}
-              />
-            </div>
-            <div>
-              <label
-                className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-              >
-                Câți clienți gestionezi în prezent? *
-              </label>
-              <select
-                required
-                className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors bg-white"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                <option value="">Selectează</option>
-                <option>1–5 clienți</option>
-                <option>6–15 clienți</option>
-                <option>16–30 clienți</option>
-                <option>30+ clienți</option>
-              </select>
-            </div>
-            <div>
-              <label
-                className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-              >
-                Tip parteneriat preferat
-              </label>
-              <div className="flex gap-4">
-                {["Afiliat", "Reseller", "Ambele"].map((opt) => (
-                  <label key={opt} className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="partnership" value={opt} className="accent-[#0051CC]" />
-                    <span className="text-sm text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
-                      {opt}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-[#00C2FF] hover:bg-[#0051CC] text-[#0D1F5C] hover:text-white font-semibold text-sm py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg mt-2"
-              style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
-            >
-              Trimite aplicația →
-            </button>
-            <p className="text-center text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-              Te contactăm în maximum 24h cu detalii despre program.
-            </p>
-          </form>
+          <PartnersForm />
         </div>
       </section>
     </>
