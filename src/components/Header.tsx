@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import NovaIcon from "./NovaIcon";
 
@@ -14,9 +15,16 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
 ];
 
+// Pages where the header sits over a light background from the start
+const LIGHT_BG_PAGES = ["/start"];
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  const forceDark = LIGHT_BG_PAGES.includes(pathname);
+  const dark = forceDark || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 16);
@@ -27,7 +35,7 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        dark
           ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-[#EEF2FF]"
           : "bg-transparent"
       }`}
@@ -51,7 +59,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-body text-sm font-medium transition-colors ${isScrolled ? "text-[#6B7A9A] hover:text-[#0D1F5C]" : "text-white hover:text-white/80"}`}
+                className={`font-body text-sm font-medium transition-colors ${dark ? "text-[#6B7A9A] hover:text-[#0D1F5C]" : "text-white hover:text-white/80"}`}
                 style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
               >
                 {link.label}
@@ -63,7 +71,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-3">
             <a
               href="https://my.trynova.ro/login"
-              className={`font-body text-sm font-medium px-4 py-2 rounded-lg transition-colors ${isScrolled ? "text-[#0D1F5C] hover:text-[#0051CC]" : "text-white hover:text-white/80"}`}
+              className={`font-body text-sm font-medium px-4 py-2 rounded-lg transition-colors ${dark ? "text-[#0D1F5C] hover:text-[#0051CC]" : "text-white hover:text-white/80"}`}
               style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
             >
               Autentificare
@@ -80,7 +88,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden p-2 rounded-lg transition-colors ${isScrolled ? "text-[#0D1F5C] hover:bg-[#EEF2FF]" : "text-white hover:bg-white/10"}`}
+            className={`lg:hidden p-2 rounded-lg transition-colors ${dark ? "text-[#0D1F5C] hover:bg-[#EEF2FF]" : "text-white hover:bg-white/10"}`}
             aria-label="Deschide meniu"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
