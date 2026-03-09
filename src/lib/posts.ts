@@ -305,7 +305,7 @@ export const posts: Post[] = [
     readTime: "8 min",
     date: "19 Dec 2025",
     author: "Echipa nova",
-    image: "https://images.unsplash.com/photo-Jn1csk3lWDA?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     imageAlt: "Persoană care citește emailuri pe laptop",
     content: [
       { type: "p", text: "Email-ul are cel mai mare ROI din toate canalele de marketing: 36 RON returnat pentru fiecare 1 RON investit (DMA, 2025). Și, spre deosebire de social media, lista ta de emailuri îți aparține complet." },
