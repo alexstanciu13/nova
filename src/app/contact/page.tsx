@@ -1,20 +1,17 @@
-import type { Metadata } from "next";
-import { Mail, MessageSquare, Phone, MapPin, Clock } from "lucide-react";
-import SectionHeader from "@/components/SectionHeader";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact — nova",
-  description: "Contactează echipa nova. Suport în română prin email, chat sau telefon.",
-};
+import { useState } from "react";
+import { Mail, MessageSquare, Phone, MapPin, Clock, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import SectionHeader from "@/components/SectionHeader";
 
 const channels = [
   {
     icon: Mail,
     title: "Email",
     desc: "Pentru întrebări generale și suport tehnic",
-    value: "support@nova.ro",
+    value: "support@trynova.ro",
     action: "Trimite email",
-    href: "mailto:support@nova.ro",
+    href: "mailto:support@trynova.ro",
     time: "Răspuns în 24h",
   },
   {
@@ -37,7 +34,35 @@ const channels = [
   },
 ];
 
+type Status = "idle" | "loading" | "success" | "error";
+
 export default function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState<Status>("idle");
+
+  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  const inputClass =
+    "w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors";
+
   return (
     <>
       {/* Hero */}
@@ -55,18 +80,17 @@ export default function ContactPage() {
           >
             Suntem aici pentru tine
           </h1>
-          <p
-            className="text-white/70 text-lg"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
+          <p className="text-white/70 text-lg" style={{ fontFamily: "var(--font-body)" }}>
             Echipa nova răspunde în română. Alege canalul preferat.
           </p>
         </div>
       </section>
 
-      {/* Contact channels */}
+      {/* Channels + form */}
       <section className="py-20 bg-[#EEF2FF]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Channel cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             {channels.map((ch) => {
               const Icon = ch.icon;
@@ -116,88 +140,138 @@ export default function ContactPage() {
               title="Trimite-ne un mesaj"
               subtitle="Completează formularul și te contactăm în 24h."
             />
-            <form className="mt-10 bg-white rounded-2xl border border-[#EEF2FF] shadow-sm p-8 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            {status === "success" ? (
+              <div className="mt-10 bg-white rounded-2xl border border-emerald-200 shadow-sm p-10 text-center">
+                <CheckCircle size={48} className="text-emerald-500 mx-auto mb-4" />
+                <h3
+                  className="text-xl font-bold text-[#0D1F5C] mb-2"
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+                >
+                  Mesaj trimis!
+                </h3>
+                <p className="text-[#6B7A9A] text-sm mb-6" style={{ fontFamily: "var(--font-body)" }}>
+                  Am primit mesajul tău și îți vom răspunde în maximum 24h.
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  className="text-sm font-semibold text-[#0051CC] hover:underline"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  Trimite un alt mesaj
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-10 bg-white rounded-2xl border border-[#EEF2FF] shadow-sm p-8 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
+                      style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                    >
+                      Prenume și Nume *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ion Popescu"
+                      value={form.name}
+                      onChange={set("name")}
+                      className={inputClass}
+                      style={{ fontFamily: "var(--font-body)" }}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
+                      style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                    >
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="ion@afacerea-ta.ro"
+                      value={form.email}
+                      onChange={set("email")}
+                      className={inputClass}
+                      style={{ fontFamily: "var(--font-body)" }}
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label
                     className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
                     style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
                   >
-                    Prenume și Nume *
+                    Subiect *
                   </label>
-                  <input
-                    type="text"
+                  <select
                     required
-                    placeholder="Ion Popescu"
-                    className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
+                    value={form.subject}
+                    onChange={set("subject")}
+                    className={inputClass + " bg-white"}
                     style={{ fontFamily: "var(--font-body)" }}
-                  />
+                  >
+                    <option value="">Selectează subiectul</option>
+                    <option>Întrebare despre produs</option>
+                    <option>Suport tehnic</option>
+                    <option>Facturare & abonament</option>
+                    <option>Parteneriat / Agenție</option>
+                    <option>Altceva</option>
+                  </select>
                 </div>
+
                 <div>
                   <label
                     className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
                     style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
                   >
-                    Email *
+                    Mesaj *
                   </label>
-                  <input
-                    type="email"
+                  <textarea
                     required
-                    placeholder="ion@afacerea-ta.ro"
-                    className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
+                    rows={5}
+                    placeholder="Descrie problema sau întrebarea ta cu cât mai multe detalii..."
+                    value={form.message}
+                    onChange={set("message")}
+                    className={inputClass + " resize-none"}
                     style={{ fontFamily: "var(--font-body)" }}
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+
+                {status === "error" && (
+                  <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm" style={{ fontFamily: "var(--font-body)" }}>
+                    <AlertCircle size={16} className="flex-shrink-0" />
+                    Ceva nu a mers. Încearcă din nou sau scrie direct la contact@trynova.ro
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="w-full flex items-center justify-center gap-2 bg-[#00C2FF] hover:bg-[#0051CC] disabled:opacity-60 disabled:cursor-not-allowed text-[#0D1F5C] hover:text-white font-semibold text-sm py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg"
+                  style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
                 >
-                  Subiect *
-                </label>
-                <select
-                  required
-                  className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors bg-white"
-                  style={{ fontFamily: "var(--font-body)" }}
-                >
-                  <option value="">Selectează subiectul</option>
-                  <option>Întrebare despre produs</option>
-                  <option>Suport tehnic</option>
-                  <option>Facturare & abonament</option>
-                  <option>Parteneriat / Agenție</option>
-                  <option>Altceva</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-                >
-                  Mesaj *
-                </label>
-                <textarea
-                  required
-                  rows={5}
-                  placeholder="Descrie problema sau întrebarea ta cu cât mai multe detalii..."
-                  className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors resize-none"
-                  style={{ fontFamily: "var(--font-body)" }}
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-[#00C2FF] hover:bg-[#0051CC] text-[#0D1F5C] hover:text-white font-semibold text-sm py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
-              >
-                Trimite mesajul →
-              </button>
-              <p className="text-center text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-                Răspundem în maximum 24h în ziua lucrătoare.
-              </p>
-            </form>
+                  {status === "loading" ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Se trimite...
+                    </>
+                  ) : (
+                    "Trimite mesajul →"
+                  )}
+                </button>
+
+                <p className="text-center text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
+                  Răspundem în maximum 24h în ziua lucrătoare.
+                </p>
+              </form>
+            )}
           </div>
 
-          {/* Office info */}
+          {/* Location */}
           <div className="mt-12 text-center">
             <div className="inline-flex items-center gap-2 text-[#6B7A9A] text-sm" style={{ fontFamily: "var(--font-body)" }}>
               <MapPin size={14} className="text-[#0051CC]" />
