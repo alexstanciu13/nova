@@ -185,41 +185,70 @@ export default function TemplatesPage() {
               >
                 {/* Site preview */}
                 <div
-                  className="aspect-[4/3] flex flex-col p-4 gap-2 relative overflow-hidden"
-                  style={{
-                    background: `linear-gradient(135deg, ${t.colors[0]}20, ${t.colors[1]})`,
-                  }}
+                  className="aspect-[4/3] flex flex-col p-3 relative overflow-hidden"
+                  style={{ background: `linear-gradient(135deg, ${t.colors[0]}15, ${t.colors[1]}80)` }}
                 >
-                  {/* Fake browser */}
-                  <div className="bg-white rounded-lg shadow-sm overflow-hidden flex-1">
-                    <div className="flex gap-1 px-2 py-1.5 bg-gray-50 border-b border-gray-100">
-                      {[1, 2, 3].map((i) => (
-                        <div
-                          key={i}
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: i === 1 ? "#FF605C" : i === 2 ? "#FFBD44" : "#00CA4E" }}
-                        />
-                      ))}
+                  {/* Fake browser window */}
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1 flex flex-col">
+                    {/* Browser chrome */}
+                    <div className="flex items-center gap-1 px-2 py-1.5 bg-gray-50 border-b border-gray-100 flex-shrink-0">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#FF605C]" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD44]" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#00CA4E]" />
+                      <div className="ml-1.5 flex-1 bg-gray-200 rounded-full h-1.5" />
                     </div>
-                    <div className="p-2 space-y-1.5">
-                      {/* Nav */}
-                      <div className="flex gap-1 items-center mb-2">
-                        <div className="w-4 h-4 rounded" style={{ backgroundColor: t.colors[0] }} />
-                        <div className="flex gap-2 ml-1">
-                          {[1, 2, 3].map((i) => (
-                            <div key={i} className="w-6 h-1 bg-gray-200 rounded-full" />
+
+                    {/* Website content */}
+                    <div className="flex-1 overflow-hidden flex flex-col">
+                      {/* Navbar */}
+                      <div
+                        className="flex items-center justify-between px-2 py-1 flex-shrink-0"
+                        style={{ borderBottom: `1px solid ${t.colors[0]}20` }}
+                      >
+                        <div className="flex items-center gap-1">
+                          <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: t.colors[0] }} />
+                          <div className="w-8 h-1.5 rounded-full" style={{ backgroundColor: t.colors[0] + "70" }} />
+                        </div>
+                        <div className="flex gap-1.5">
+                          {[28, 22, 26, 20].map((w, i) => (
+                            <div key={i} className="h-1 rounded-full bg-gray-200" style={{ width: w }} />
                           ))}
                         </div>
+                        <div className="h-2.5 w-8 rounded" style={{ backgroundColor: t.colors[0] }} />
                       </div>
-                      {/* Hero */}
-                      <div className="h-8 rounded" style={{ backgroundColor: t.colors[0] + "40" }} />
-                      {/* Content */}
-                      <div className="grid grid-cols-3 gap-1">
+
+                      {/* Hero section */}
+                      <div
+                        className="px-2 py-2 flex-shrink-0"
+                        style={{ backgroundColor: t.colors[0] }}
+                      >
+                        <div className="h-1 w-12 rounded-full mb-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }} />
+                        <div className="h-2 w-20 rounded-full mb-1" style={{ backgroundColor: "rgba(255,255,255,0.9)" }} />
+                        <div className="h-1 w-16 rounded-full mb-2" style={{ backgroundColor: "rgba(255,255,255,0.5)" }} />
+                        <div className="h-2.5 w-10 rounded" style={{ backgroundColor: t.colors[1], opacity: 0.95 }} />
+                      </div>
+
+                      {/* Feature cards */}
+                      <div className="grid grid-cols-3 gap-1 px-2 pt-1.5 flex-shrink-0">
                         {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-5 bg-gray-100 rounded" />
+                          <div key={i} className="rounded p-1 space-y-0.5" style={{ backgroundColor: t.colors[1] }}>
+                            <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: t.colors[0] + "50" }} />
+                            <div className="h-1 rounded-full" style={{ backgroundColor: t.colors[0] + "40" }} />
+                            <div className="h-1 rounded-full w-4/5 bg-gray-200" />
+                          </div>
                         ))}
                       </div>
-                      <div className="h-3 bg-gray-100 rounded w-3/4" />
+
+                      {/* Content row */}
+                      <div className="flex gap-1.5 px-2 pt-1.5">
+                        <div className="w-[45%] h-7 rounded-sm flex-shrink-0" style={{ backgroundColor: t.colors[1] }} />
+                        <div className="flex-1 space-y-1 pt-0.5">
+                          <div className="h-1 rounded-full" style={{ backgroundColor: t.colors[0] + "50" }} />
+                          <div className="h-1 rounded-full w-4/5 bg-gray-100" />
+                          <div className="h-1 rounded-full w-3/5 bg-gray-100" />
+                          <div className="h-2 w-8 rounded mt-0.5" style={{ backgroundColor: t.colors[0] + "60" }} />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
