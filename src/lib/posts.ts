@@ -30,7 +30,7 @@ export const posts: Post[] = [
     date: "28 Feb 2026",
     featured: true,
     author: "Echipa nova",
-    image: "https://images.unsplash.com/photo-1432888498266-38ffcea3f960?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=800&q=80",
     imageAlt: "Persoană care tastează pe laptop, căutare Google",
     content: [
       { type: "p", text: "Dacă ai o afacere locală în România și vrei să fii găsit de clienți pe Google, ai nevoie de o strategie clară de SEO local. Vestea bună: nu e atât de complicat pe cât pare." },
@@ -305,7 +305,7 @@ export const posts: Post[] = [
     readTime: "8 min",
     date: "19 Dec 2025",
     author: "Echipa nova",
-    image: "https://images.unsplash.com/photo-1596526131083-e8c633964948?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1526628953301-3cd0c7434031?auto=format&fit=crop&w=800&q=80",
     imageAlt: "Persoană care citește emailuri pe laptop",
     content: [
       { type: "p", text: "Email-ul are cel mai mare ROI din toate canalele de marketing: 36 RON returnat pentru fiecare 1 RON investit (DMA, 2025). Și, spre deosebire de social media, lista ta de emailuri îți aparține complet." },
