@@ -1,15 +1,78 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, Share2 } from "lucide-react";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { ArrowLeft, Clock, Calendar, Share2, ArrowRight } from "lucide-react";
+import { posts, getPostBySlug, getAdjacentPosts, type Section } from "@/lib/posts";
 
-export const metadata: Metadata = {
-  title: "Articol Blog",
-  description: "Articol de pe blogul nova.",
-};
+export async function generateStaticParams() {
+  return posts.map((p) => ({ slug: p.slug }));
+}
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) return { title: "Articol negăsit" };
+  return {
+    title: `${post.title} — Blog nova`,
+    description: post.excerpt,
+  };
+}
+
+function renderSection(section: Section, idx: number) {
+  switch (section.type) {
+    case "h2":
+      return (
+        <h2 key={idx} style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "#0D1F5C", fontSize: "1.375rem", marginTop: "2rem", marginBottom: "0.75rem" }}>
+          {section.text}
+        </h2>
+      );
+    case "h3":
+      return (
+        <h3 key={idx} style={{ fontFamily: "var(--font-display)", fontWeight: 600, color: "#0D1F5C", fontSize: "1.125rem", marginTop: "1.5rem", marginBottom: "0.5rem" }}>
+          {section.text}
+        </h3>
+      );
+    case "p":
+      return (
+        <p key={idx} style={{ fontFamily: "var(--font-body)", color: "#0D1F5C", lineHeight: "1.8", marginBottom: "1.25rem" }}>
+          {section.text}
+        </p>
+      );
+    case "ul":
+      return (
+        <ul key={idx} style={{ marginBottom: "1.25rem", paddingLeft: "1.25rem" }}>
+          {section.items.map((item, i) => (
+            <li key={i} style={{ fontFamily: "var(--font-body)", color: "#0D1F5C", marginBottom: "0.4rem", lineHeight: "1.7", listStyleType: "disc" }}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+    case "ol":
+      return (
+        <ol key={idx} style={{ marginBottom: "1.25rem", paddingLeft: "1.25rem" }}>
+          {section.items.map((item, i) => (
+            <li key={i} style={{ fontFamily: "var(--font-body)", color: "#0D1F5C", marginBottom: "0.4rem", lineHeight: "1.7", listStyleType: "decimal" }}>
+              {item}
+            </li>
+          ))}
+        </ol>
+      );
+  }
+}
+
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  if (!post) notFound();
+
+  const { prev, next } = getAdjacentPosts(slug);
+  const headings = post.content.filter((s) => s.type === "h2").map((s) => (s as { type: "h2"; text: string }).text);
+
   return (
     <>
+      {/* Hero */}
       <section className="bg-[#060D1A] pt-32 pb-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
@@ -21,106 +84,57 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             Înapoi la Blog
           </Link>
           <span className="text-xs font-semibold text-[#00C2FF] bg-[#00C2FF]/10 px-2.5 py-1 rounded-full">
-            Ghiduri Business
+            {post.category}
           </span>
           <h1
             className="text-3xl sm:text-4xl font-extrabold text-white mt-4 mb-5 leading-tight"
             style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.02em" }}
           >
-            Cum apari pe Google cu afacerea ta locală: ghid complet 2026
+            {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-4 text-white/50 text-sm" style={{ fontFamily: "var(--font-body)" }}>
-            <div className="flex items-center gap-1.5">
-              <Clock size={14} />
-              8 min de lectură
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Calendar size={14} />
-              28 Februarie 2026
-            </div>
-            <div className="flex items-center gap-1.5 text-white/40">
-              Echipa nova
-            </div>
+            <div className="flex items-center gap-1.5"><Clock size={14} />{post.readTime} de lectură</div>
+            <div className="flex items-center gap-1.5"><Calendar size={14} />{post.date}</div>
+            <span className="text-white/40">{post.author}</span>
           </div>
         </div>
       </section>
 
+      {/* Cover image */}
+      <div className="relative w-full aspect-[21/9] max-h-[420px] overflow-hidden">
+        <Image
+          src={post.image}
+          alt={post.imageAlt}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#060D1A]/30 to-transparent" />
+      </div>
+
+      {/* Content */}
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-10">
-            {/* Article content */}
-            <article className="prose prose-lg max-w-none">
-              <style>{`
-                .prose h2 { font-family: var(--font-display); font-weight: 700; color: #0D1F5C; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
-                .prose h3 { font-family: var(--font-display); font-weight: 600; color: #0D1F5C; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-                .prose p { font-family: var(--font-body); color: #0D1F5C; line-height: 1.8; margin-bottom: 1.25rem; }
-                .prose ul { margin-bottom: 1.25rem; }
-                .prose li { font-family: var(--font-body); color: #0D1F5C; margin-bottom: 0.5rem; }
-                .prose strong { font-weight: 600; color: #0D1F5C; }
-              `}</style>
-
-              <p>
-                Dacă ai o afacere locală în România și vrei să fii găsit de clienți pe Google, ai nevoie de o strategie clară de SEO local. Vestea bună: nu e atât de complicat pe cât pare.
-              </p>
-
-              <h2>1. Google Business Profile — fundația oricărei strategii locale</h2>
-              <p>
-                Primul pas este să creezi sau să revendici profilul tău Google Business Profile (GBP). Acesta e listing-ul care apare pe Google Maps și în căutările locale cu date de contact, program și recenzii.
-              </p>
-              <p>
-                Asigură-te că incluzi:
-              </p>
-              <ul>
-                <li>Categoria corectă a afacerii (ex: &ldquo;Restaurant&rdquo;, &ldquo;Cabinet stomatologic&rdquo;)</li>
-                <li>Adresa completă și numărul de telefon corect</li>
-                <li>Programul de funcționare actualizat</li>
-                <li>Cel puțin 10 fotografii de calitate</li>
-                <li>Descriere detaliată cu cuvinte cheie relevante</li>
-              </ul>
-
-              <h2>2. Site-ul tău — cartea de vizită digitală</h2>
-              <p>
-                Un site WordPress bine optimizat este esențial. Google preferă site-urile rapide, mobile-friendly și cu conținut relevant. Cu nova, generezi automat un site optimizat SEO, cu structura corectă de headings și meta-taguri.
-              </p>
-
-              <h2>3. Cuvinte cheie locale — cum le găsești</h2>
-              <p>
-                Gândește-te cum caută clienții tăi: &ldquo;stomatolog Cluj&rdquo;, &ldquo;restaurant italian București centru&rdquo;, &ldquo;instalator autorizat Timișoara&rdquo;. Integrează aceste fraze natural în textul site-ului, titlurile paginilor și descrierile meta.
-              </p>
-
-              <h2>4. Recenzii Google — cea mai puternică armă</h2>
-              <p>
-                Recenziile sunt factorul #1 în decizia unui client local. 5 recenzii autentice și pozitive îți pot dubla rata de click din Google Maps. Solicită activ recenzii clienților mulțumiți.
-              </p>
-
-              <h2>Concluzie</h2>
-              <p>
-                SEO local nu este un sprint, ci un maraton. Dar dacă urmezi acești pași și ai un site bine construit, vei vedea rezultate în 2-3 luni. Nova îți oferă fundația tehnică — tu te ocupi de conținut și relații cu clienții.
-              </p>
+            {/* Article */}
+            <article>
+              {post.content.map((section, idx) => renderSection(section, idx))}
             </article>
 
             {/* Sidebar */}
             <aside className="space-y-6">
               {/* TOC */}
-              <div className="bg-[#EEF2FF] rounded-xl p-5">
-                <h4
-                  className="text-sm font-bold text-[#0D1F5C] mb-3"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                >
+              <div className="bg-[#EEF2FF] rounded-xl p-5 sticky top-24">
+                <h4 className="text-sm font-bold text-[#0D1F5C] mb-3" style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}>
                   Cuprins
                 </h4>
                 <ul className="space-y-2 text-sm">
-                  {[
-                    "1. Google Business Profile",
-                    "2. Site-ul tău",
-                    "3. Cuvinte cheie locale",
-                    "4. Recenzii Google",
-                    "Concluzie",
-                  ].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-[#0051CC] hover:text-[#0D1F5C] transition-colors" style={{ fontFamily: "var(--font-body)" }}>
-                        {item}
-                      </a>
+                  {headings.map((heading) => (
+                    <li key={heading}>
+                      <span className="text-[#0051CC] text-xs" style={{ fontFamily: "var(--font-body)" }}>
+                        {heading}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -128,10 +142,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
               {/* Share */}
               <div className="bg-white border border-[#EEF2FF] rounded-xl p-5">
-                <h4
-                  className="text-sm font-bold text-[#0D1F5C] mb-3 flex items-center gap-2"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                >
+                <h4 className="text-sm font-bold text-[#0D1F5C] mb-3 flex items-center gap-2" style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}>
                   <Share2 size={14} />
                   Distribuie
                 </h4>
@@ -150,10 +161,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
               {/* CTA */}
               <div className="bg-[#0D1F5C] rounded-xl p-5 text-center">
-                <p
-                  className="text-white font-bold text-sm mb-2"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                >
+                <p className="text-white font-bold text-sm mb-2" style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}>
                   Gata să lansezi site-ul?
                 </p>
                 <p className="text-white/60 text-xs mb-4" style={{ fontFamily: "var(--font-body)" }}>
@@ -169,6 +177,30 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               </div>
             </aside>
           </div>
+
+          {/* Prev / Next */}
+          {(prev || next) && (
+            <div className="mt-14 pt-8 border-t border-[#EEF2FF] grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {prev && (
+                <Link href={`/blog/${prev.slug}`} className="group flex items-center gap-3 bg-[#EEF2FF] hover:bg-[#0D1F5C] rounded-xl p-4 transition-all">
+                  <ArrowLeft size={16} className="text-[#0051CC] group-hover:text-white flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-[#6B7A9A] group-hover:text-white/60 mb-0.5" style={{ fontFamily: "var(--font-body)" }}>Articolul anterior</p>
+                    <p className="text-sm font-semibold text-[#0D1F5C] group-hover:text-white leading-snug line-clamp-2" style={{ fontFamily: "var(--font-body)" }}>{prev.title}</p>
+                  </div>
+                </Link>
+              )}
+              {next && (
+                <Link href={`/blog/${next.slug}`} className="group flex items-center gap-3 bg-[#EEF2FF] hover:bg-[#0D1F5C] rounded-xl p-4 transition-all sm:ml-auto text-right">
+                  <div>
+                    <p className="text-xs text-[#6B7A9A] group-hover:text-white/60 mb-0.5" style={{ fontFamily: "var(--font-body)" }}>Articolul următor</p>
+                    <p className="text-sm font-semibold text-[#0D1F5C] group-hover:text-white leading-snug line-clamp-2" style={{ fontFamily: "var(--font-body)" }}>{next.title}</p>
+                  </div>
+                  <ArrowRight size={16} className="text-[#0051CC] group-hover:text-white flex-shrink-0" />
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </>
