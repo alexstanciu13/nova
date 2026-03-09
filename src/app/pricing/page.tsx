@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import PricingHero from "@/components/pricing/PricingHero";
 import PricingPlans from "@/components/pricing/PricingPlans";
-import AddOnsSection from "@/components/pricing/AddOnsSection";
 import ComparisonTable from "@/components/pricing/ComparisonTable";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import PricingCTA from "@/components/pricing/PricingCTA";
@@ -17,7 +16,6 @@ export default function PricingPage() {
     <>
       <PricingHero />
       <PricingPlans />
-      <AddOnsSection />
       <ComparisonTable />
       <PricingFAQ />
       <PricingCTA />
