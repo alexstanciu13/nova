@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import ShowcaseGrid from "@/components/templates/ShowcaseGrid";
 
 const testimonials = [
   {
@@ -62,15 +63,6 @@ const testimonials = [
     initials: "CM",
     color: "#0D1F5C",
   },
-];
-
-const showcaseSites = [
-  { category: "Restaurant", name: "La Bunica", bg: "#FFF8F0" },
-  { category: "Clinică", name: "MedCenter", bg: "#F0F8FF" },
-  { category: "Salon", name: "Beauty Star", bg: "#FFF0F8" },
-  { category: "Construcții", name: "M&S Build", bg: "#F0FFF8" },
-  { category: "Produse Bio", name: "AgroFresh", bg: "#FFFFF0" },
-  { category: "Servicii", name: "ElectroPro", bg: "#F8F0FF" },
 ];
 
 const stats = [
@@ -155,40 +147,7 @@ export default function SocialProofSection() {
             title="Site-uri reale, create cu nova"
             subtitle="Fiecare site este unic, adaptat specificului afacerii tale."
           />
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4">
-            {showcaseSites.map((site) => (
-              <div
-                key={site.name}
-                className="rounded-xl overflow-hidden border border-[#EEF2FF] hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer group"
-                style={{ backgroundColor: site.bg }}
-              >
-                <div className="aspect-[4/3] flex flex-col items-center justify-center p-6 gap-3">
-                  {/* Mock website preview */}
-                  <div className="w-full bg-white rounded-lg shadow-sm p-3 space-y-2">
-                    <div className="h-2 bg-[#0D1F5C]/20 rounded w-3/4" />
-                    <div className="h-1.5 bg-[#0D1F5C]/10 rounded w-full" />
-                    <div className="h-1.5 bg-[#0D1F5C]/10 rounded w-2/3" />
-                    <div className="grid grid-cols-3 gap-1 mt-2">
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="h-6 bg-[#EEF2FF] rounded" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="px-4 py-3 bg-white border-t border-[#EEF2FF]">
-                  <span className="text-xs font-semibold text-[#0051CC] bg-[#EEF2FF] px-2 py-0.5 rounded-full">
-                    {site.category}
-                  </span>
-                  <p
-                    className="text-[#0D1F5C] text-sm font-semibold mt-1"
-                    style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
-                  >
-                    {site.name}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ShowcaseGrid />
         </div>
       </div>
     </section>
