@@ -5,10 +5,10 @@ import { Check, Zap, ShoppingCart, Globe, FileBarChart, ArrowRight, Plus, X } fr
 
 // ─── Add-ons ─────────────────────────────────────────────────────────────────
 const ADDONS = [
-  { id: "store-basic",  name: "Store Basic",              icon: ShoppingCart, price: 79,  label: "+79 RON/lună" },
-  { id: "store-growth", name: "Store Growth",             icon: ShoppingCart, price: 129, label: "+129 RON/lună" },
-  { id: "domain",       name: "Domeniu & DNS",            icon: Globe,        price: 29,  label: "+29 RON/lună" },
-  { id: "reporting",    name: "Raportare Automată",       icon: FileBarChart, price: 39,  label: "+39 RON/lună" },
+  { id: "store-basic",  name: "Store Basic",        icon: ShoppingCart, price: 79,  label: "+79 RON/lună",  desc: "Magazin online cu până la 50 produse, coș de cumpărături și plăți online." },
+  { id: "store-growth", name: "Store Growth",       icon: ShoppingCart, price: 129, label: "+129 RON/lună", desc: "Produse nelimitate, reduceri, coduri promo și rapoarte de vânzări." },
+  { id: "domain",       name: "Domeniu & DNS",      icon: Globe,        price: 29,  label: "+29 RON/lună",  desc: "Înregistrare domeniu .ro/.com și configurare DNS gestionată de noi." },
+  { id: "reporting",    name: "Raportare Automată", icon: FileBarChart, price: 39,  label: "+39 RON/lună",  desc: "Raport PDF lunar cu trafic, conversii și recomandări SEO." },
 ] as const;
 
 type AddonId = typeof ADDONS[number]["id"];
@@ -305,17 +305,25 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
                     : "bg-white border-[#EEF2FF] text-[#0D1F5C] hover:border-[#0051CC]/40 hover:bg-[#EEF2FF]/50"
                 }`}
               >
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-start gap-2 min-w-0">
                   <AddonIcon
                     size={12}
-                    className={`flex-shrink-0 ${active ? "text-white" : "text-[#0051CC]"}`}
+                    className={`flex-shrink-0 mt-0.5 ${active ? "text-white" : "text-[#0051CC]"}`}
                   />
-                  <span
-                    className={`text-xs font-medium truncate ${active ? "text-white" : "text-[#0D1F5C]"}`}
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-                  >
-                    {addon.name}
-                  </span>
+                  <div className="min-w-0">
+                    <span
+                      className={`text-xs font-medium block ${active ? "text-white" : "text-[#0D1F5C]"}`}
+                      style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                    >
+                      {addon.name}
+                    </span>
+                    <span
+                      className={`text-xs leading-tight block ${active ? "text-white/70" : "text-[#6B7A9A]"}`}
+                      style={{ fontFamily: "var(--font-body)" }}
+                    >
+                      {addon.desc}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span
