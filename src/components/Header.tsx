@@ -61,13 +61,13 @@ export default function Header() {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link
-              href="/login"
+            <a
+              href="https://my.trynova.ro/login"
               className={`font-body text-sm font-medium px-4 py-2 rounded-lg transition-colors ${isScrolled ? "text-[#0D1F5C] hover:text-[#0051CC]" : "text-white hover:text-white/80"}`}
               style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
             >
               Autentificare
-            </Link>
+            </a>
             <Link
               href="/start"
               className="bg-[#00C2FF] hover:bg-[#0051CC] text-[#0D1F5C] hover:text-white font-body text-sm font-semibold px-5 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md"
@@ -104,13 +104,13 @@ export default function Header() {
               </Link>
             ))}
             <div className="pt-3 space-y-2 border-t border-[#EEF2FF] mt-3">
-              <Link
-                href="/login"
+              <a
+                href="https://my.trynova.ro/login"
                 onClick={() => setMobileOpen(false)}
                 className="block text-center text-[#0D1F5C] border border-[#0D1F5C] font-body text-sm font-medium px-4 py-2.5 rounded-lg transition-colors hover:bg-[#EEF2FF]"
               >
                 Autentificare
-              </Link>
+              </a>
               <Link
                 href="/start"
                 onClick={() => setMobileOpen(false)}
