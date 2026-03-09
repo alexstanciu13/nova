@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, Users, TrendingUp, BarChart3, Layout, FileText, Headphones } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
+import EarningsCalculator from "@/components/partners/EarningsCalculator";
 
 export const metadata: Metadata = {
   title: "Parteneri & Agenții — Câștigă venituri recurente cu nova",
@@ -178,39 +179,7 @@ export default function PartnersPage() {
             title="Estimează venitul tău lunar"
             subtitle="Calculează cât poți câștiga în funcție de numărul de clienți gestionați."
           />
-          <div className="mt-12 bg-white rounded-2xl p-8 border border-[#EEF2FF] shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              {[
-                { clients: 5, label: "Start (5 clienți)", monthly: "~590 RON", annually: "~7.080 RON" },
-                { clients: 15, label: "Mediu (15 clienți)", monthly: "~1.770 RON", annually: "~21.240 RON" },
-                { clients: 30, label: "Agenție (30 clienți)", monthly: "~3.540 RON", annually: "~42.480 RON" },
-              ].map((tier) => (
-                <div
-                  key={tier.clients}
-                  className="text-center rounded-xl bg-[#EEF2FF] p-5 border border-[#EEF2FF] hover:border-[#0051CC]/30 transition-colors"
-                >
-                  <p
-                    className="text-sm font-semibold text-[#6B7A9A] mb-2"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  >
-                    {tier.label}
-                  </p>
-                  <p
-                    className="text-2xl font-bold text-[#0D1F5C] mb-1"
-                    style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}
-                  >
-                    {tier.monthly}
-                  </p>
-                  <p className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-                    lunar • {tier.annually}/an
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-center text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-              * Estimare bazată pe comisionul standard de afiliere. Detalii exacte la aplicare.
-            </p>
-          </div>
+          <EarningsCalculator />
         </div>
       </section>
 

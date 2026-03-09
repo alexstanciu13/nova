@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check, Shield, Clock, Headphones } from "lucide-react";
+import { Check, Shield, Clock, Headphones, Zap, Globe, BarChart3, Star } from "lucide-react";
 import NovaIcon from "@/components/NovaIcon";
 
 export const metadata: Metadata = {
@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     "Înregistrează-te gratuit. 14 zile trial complet. Generare AI inclusă. Fără card obligatoriu.",
 };
+
+const included = [
+  { icon: Zap, text: "Site generat de AI în sub 60 secunde" },
+  { icon: Globe, text: "Domeniu .ro gratuit în primul an" },
+  { icon: BarChart3, text: "SEO, analytics și tracking incluse" },
+  { icon: Headphones, text: "Suport în română 7 zile din 7" },
+];
 
 const steps = [
   "Creează site-ul cu AI",
@@ -21,7 +28,8 @@ export default function StartPage() {
   return (
     <div className="min-h-screen bg-[#EEF2FF]">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-        {/* Left: Dark side */}
+
+        {/* Left: Dark funnel side */}
         <div className="bg-[#060D1A] px-8 py-20 flex flex-col justify-center relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-[#0051CC]/20 rounded-full blur-[80px]" />
@@ -31,7 +39,7 @@ export default function StartPage() {
             <Link href="/" className="flex items-center gap-2 mb-12">
               <NovaIcon size={32} variant="light" />
               <span
-                className="text-white font-display text-xl"
+                className="text-white text-xl"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.03em" }}
               >
                 nova
@@ -92,117 +100,115 @@ export default function StartPage() {
           </div>
         </div>
 
-        {/* Right: Form */}
+        {/* Right: Value panel */}
         <div className="flex items-center justify-center px-8 py-20">
           <div className="w-full max-w-md">
-            <h2
-              className="text-2xl font-bold text-[#0D1F5C] mb-1"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-            >
-              Creează-ți contul gratuit
-            </h2>
-            <p className="text-[#6B7A9A] text-sm mb-8" style={{ fontFamily: "var(--font-body)" }}>
-              Fără card obligatoriu. 14 zile trial complet.
-            </p>
 
-            <div className="bg-white rounded-2xl border border-[#EEF2FF] shadow-sm p-7">
-              <form className="space-y-4">
+            {/* Social proof pill */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-white border border-[#EEF2FF] rounded-full px-4 py-2 shadow-sm">
+                <div className="flex -space-x-1.5">
+                  {["#0051CC", "#00C2FF", "#0D1F5C"].map((c, i) => (
+                    <div key={i} className="w-6 h-6 rounded-full border-2 border-white" style={{ backgroundColor: c }} />
+                  ))}
+                </div>
+                <span className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
+                  <span className="font-semibold text-[#0D1F5C]">+1.200 afaceri</span> și-au lansat site-ul cu nova
+                </span>
+              </div>
+            </div>
+
+            <div className="text-center mb-8">
+              <h2
+                className="text-2xl font-bold text-[#0D1F5C] mb-2"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+              >
+                Tot ce ai nevoie,<br />inclus în trial-ul gratuit
+              </h2>
+              <p className="text-[#6B7A9A] text-sm" style={{ fontFamily: "var(--font-body)" }}>
+                Fără card. Fără angajare. 14 zile gratuit, complet.
+              </p>
+            </div>
+
+            {/* What's included */}
+            <div className="bg-white rounded-2xl border border-[#EEF2FF] shadow-sm p-6 mb-5">
+              <p
+                className="text-xs font-semibold uppercase tracking-widest text-[#6B7A9A] mb-4"
+                style={{ fontFamily: "var(--font-body)", letterSpacing: "0.1em" }}
+              >
+                Inclus în cele 14 zile gratuite
+              </p>
+              <ul className="space-y-3">
+                {included.map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#EEF2FF] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon size={15} className="text-[#0051CC]" />
+                    </div>
+                    <span className="text-sm text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
+                      {text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Value comparison */}
+              <div className="mt-5 pt-5 border-t border-[#EEF2FF] flex items-center justify-between">
                 <div>
-                  <label
-                    className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                  <p className="text-xs text-[#6B7A9A] mb-0.5" style={{ fontFamily: "var(--font-body)" }}>
+                    Valoare normală
+                  </p>
+                  <p
+                    className="text-sm text-[#6B7A9A] line-through"
+                    style={{ fontFamily: "var(--font-mono)", fontWeight: 600 }}
                   >
-                    Adresă email *
-                  </label>
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="tu@afacerea-ta.ro"
-                    className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  />
+                    79 RON/lună
+                  </p>
                 </div>
-                <div>
-                  <label
-                    className="block text-sm font-medium text-[#0D1F5C] mb-1.5"
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                <div className="text-right">
+                  <p className="text-xs text-[#6B7A9A] mb-0.5" style={{ fontFamily: "var(--font-body)" }}>
+                    Primele 14 zile
+                  </p>
+                  <p
+                    className="text-2xl font-bold text-[#0051CC]"
+                    style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}
                   >
-                    Parolă *
-                  </label>
-                  <input
-                    type="password"
-                    autoComplete="new-password"
-                    required
-                    placeholder="Minimum 8 caractere"
-                    className="w-full border border-[#EEF2FF] rounded-xl px-4 py-3 text-sm text-[#0D1F5C] placeholder:text-[#6B7A9A]/50 focus:outline-none focus:border-[#0051CC] focus:ring-2 focus:ring-[#0051CC]/10 transition-colors"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  />
-                </div>
-
-                <div className="flex items-start gap-2.5 pt-1">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    required
-                    className="mt-0.5 accent-[#0051CC]"
-                  />
-                  <label htmlFor="terms" className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-                    Sunt de acord cu{" "}
-                    <Link href="/terms" className="text-[#0051CC] hover:underline">
-                      Termenii și condițiile
-                    </Link>{" "}
-                    și{" "}
-                    <Link href="/privacy" className="text-[#0051CC] hover:underline">
-                      Politica de confidențialitate
-                    </Link>
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-[#00C2FF] hover:bg-[#0051CC] text-[#0D1F5C] hover:text-white font-bold text-base py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg mt-1"
-                  style={{ fontFamily: "var(--font-body)", fontWeight: 700 }}
-                >
-                  Creează contul gratuit →
-                </button>
-              </form>
-
-              <div className="relative my-5">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[#EEF2FF]" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-white px-4 text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-                    sau
-                  </span>
+                    GRATUIT
+                  </p>
                 </div>
               </div>
-
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-3 border border-[#EEF2FF] hover:border-[#0D1F5C]/30 rounded-xl py-3 text-sm text-[#0D1F5C] font-medium transition-all"
-                style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                </svg>
-                Continuă cu Google
-              </button>
             </div>
+
+            {/* Star rating */}
+            <div className="flex items-center justify-center gap-1.5 mb-5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
+              ))}
+              <span className="text-xs text-[#6B7A9A] ml-1" style={{ fontFamily: "var(--font-body)" }}>
+                4.9/5 din 300+ recenzii
+              </span>
+            </div>
+
+            {/* Primary CTA */}
+            <a
+              href="https://my.trynova.ro/sign-up"
+              className="block w-full text-center bg-[#00C2FF] hover:bg-[#0051CC] text-[#0D1F5C] hover:text-white font-bold text-base py-4 px-6 rounded-xl transition-all shadow-md hover:shadow-lg"
+              style={{ fontFamily: "var(--font-body)", fontWeight: 700 }}
+            >
+              Creează contul gratuit →
+            </a>
+
+            <p className="text-center text-xs text-[#6B7A9A] mt-3" style={{ fontFamily: "var(--font-body)" }}>
+              Anulezi oricând • Site-ul nu se șterge la anulare • Fără surprize
+            </p>
 
             <p className="text-center text-sm text-[#6B7A9A] mt-5" style={{ fontFamily: "var(--font-body)" }}>
               Ai deja cont?{" "}
-              <Link href="/login" className="text-[#0051CC] hover:text-[#0D1F5C] font-semibold transition-colors">
+              <a
+                href="https://my.trynova.ro/login"
+                className="text-[#0051CC] hover:text-[#0D1F5C] font-semibold transition-colors"
+              >
                 Autentifică-te
-              </Link>
-            </p>
-
-            <p className="text-center text-xs text-[#6B7A9A]/60 mt-3" style={{ fontFamily: "var(--font-body)" }}>
-              Anulezi oricând • Site-ul nu se șterge la anulare • Fără surprize
+              </a>
             </p>
           </div>
         </div>
