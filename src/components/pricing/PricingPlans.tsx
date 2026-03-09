@@ -1,49 +1,109 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Check, Zap, ShoppingCart, Globe, FileBarChart, PlusCircle, ArrowRight } from "lucide-react";
+import { Check, Zap, ShoppingCart, Globe, FileBarChart, ArrowRight, Plus, X } from "lucide-react";
 
-// ─── Add-ons definition ───────────────────────────────────────────────────────
-// Each plan references these by id and carries its own href (set when the
-// white-label dashboard generates the package link).
+// ─── Add-ons ─────────────────────────────────────────────────────────────────
 const ADDONS = [
-  {
-    id: "store-basic",
-    name: "Store Basic",
-    icon: ShoppingCart,
-    price: "+79 RON/lună",
-    priceMonthly: 79,
-    tags: ["WooCommerce", "Până la 50 produse", "Gateway plată"],
-  },
-  {
-    id: "store-growth",
-    name: "Store Growth",
-    icon: ShoppingCart,
-    price: "+129 RON/lună",
-    priceMonthly: 129,
-    tags: ["Produse nelimitate", "Import CSV", "1 mentenanță/lună"],
-  },
-  {
-    id: "domain",
-    name: "Gestionare Domeniu & DNS",
-    icon: Globe,
-    price: "+29 RON/lună",
-    priceMonthly: 29,
-    tags: ["Transfer domeniu", "DNS + SSL", "Reînnoire automată"],
-  },
-  {
-    id: "reporting",
-    name: "Raportare Automată",
-    icon: FileBarChart,
-    price: "+39 RON/lună",
-    priceMonthly: 39,
-    tags: ["Raport PDF lunar", "Date GA4", "Recomandări SEO"],
-  },
-];
+  { id: "store-basic",  name: "Store Basic",              icon: ShoppingCart, price: 79,  label: "+79 RON/lună" },
+  { id: "store-growth", name: "Store Growth",             icon: ShoppingCart, price: 129, label: "+129 RON/lună" },
+  { id: "domain",       name: "Domeniu & DNS",            icon: Globe,        price: 29,  label: "+29 RON/lună" },
+  { id: "reporting",    name: "Raportare Automată",       icon: FileBarChart, price: 39,  label: "+39 RON/lună" },
+] as const;
+
+type AddonId = typeof ADDONS[number]["id"];
+
+// Helper: sorted active ids → map key
+function comboKey(active: AddonId[]): string {
+  return [...active].sort().join("+");
+}
 
 // ─── Plans ────────────────────────────────────────────────────────────────────
+// hrefs: every key is a sorted "+"-joined combination of active add-on IDs.
+// "" = base plan only. Fill these in from your white-label dashboard.
 const plans = [
+  {
+    id: "core",
+    name: "Core",
+    desc: "Tot ce ai nevoie pentru a începe.",
+    monthly: 149,
+    annual: 1290,
+    twoYear: 2380,
+    highlight: false,
+    cta: "Încearcă gratuit 14 zile",
+    color: "#6B7A9A",
+    promptPrice: "1.5 RON/prompt",
+    features: [
+      "1 generare site/lună",
+      "20 prompturi AI/lună",
+      "Până la 5 pagini",
+      "Backup săptămânal",
+      "Suport email 48h",
+      "SSL inclus",
+      "Hosting inclus",
+    ],
+    hrefs: {
+      "":                                        "#",
+      "store-basic":                             "#",
+      "store-growth":                            "#",
+      "domain":                                  "#",
+      "reporting":                               "#",
+      "store-basic+store-growth":                "#",
+      "domain+store-basic":                      "#",
+      "reporting+store-basic":                   "#",
+      "domain+store-growth":                     "#",
+      "reporting+store-growth":                  "#",
+      "domain+reporting":                        "#",
+      "domain+store-basic+store-growth":         "#",
+      "reporting+store-basic+store-growth":      "#",
+      "domain+reporting+store-basic":            "#",
+      "domain+reporting+store-growth":           "#",
+      "domain+reporting+store-basic+store-growth": "#",
+    } as Record<string, string>,
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    desc: "Cel mai ales plan pentru afaceri în creștere.",
+    monthly: 239,
+    annual: 2150,
+    twoYear: 3980,
+    highlight: true,
+    badge: "Recomandat",
+    cta: "Încearcă gratuit 14 zile",
+    color: "#0051CC",
+    promptPrice: "1 RON/prompt",
+    features: [
+      "2 generări site/lună",
+      "60 prompturi AI/lună",
+      "Până la 15 pagini",
+      "Backup zilnic",
+      "SEO de bază configurat",
+      "GA4 integrat",
+      "1 intervenție tehnică/lună",
+      "Suport email 24h",
+      "SSL inclus",
+      "Hosting inclus",
+    ],
+    hrefs: {
+      "":                                        "#",
+      "store-basic":                             "#",
+      "store-growth":                            "#",
+      "domain":                                  "#",
+      "reporting":                               "#",
+      "store-basic+store-growth":                "#",
+      "domain+store-basic":                      "#",
+      "reporting+store-basic":                   "#",
+      "domain+store-growth":                     "#",
+      "reporting+store-growth":                  "#",
+      "domain+reporting":                        "#",
+      "domain+store-basic+store-growth":         "#",
+      "reporting+store-basic+store-growth":      "#",
+      "domain+reporting+store-basic":            "#",
+      "domain+reporting+store-growth":           "#",
+      "domain+reporting+store-basic+store-growth": "#",
+    } as Record<string, string>,
+  },
   {
     id: "pro",
     name: "Pro",
@@ -53,7 +113,6 @@ const plans = [
     twoYear: 6700,
     highlight: false,
     cta: "Contactează-ne",
-    ctaHref: "/contact",
     color: "#0D1F5C",
     promptPrice: "0.75 RON/prompt",
     features: [
@@ -69,73 +128,24 @@ const plans = [
       "Backup zilnic automatizat",
       "SSL inclus",
     ],
-    // href for each addon-only package — fill these in from your dashboard
-    addonHrefs: {
-      "store-basic": "#",
-      "store-growth": "#",
-      "domain": "#",
-      "reporting": "#",
-    },
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    desc: "Cel mai ales plan pentru afaceri în creștere.",
-    monthly: 239,
-    annual: 2150,
-    twoYear: 3980,
-    highlight: true,
-    badge: "Recomandat",
-    cta: "Încearcă gratuit 14 zile",
-    ctaHref: "/start",
-    color: "#0051CC",
-    promptPrice: "1 RON/prompt",
-    features: [
-      "2 generări site/lună",
-      "60 prompturi AI/lună",
-      "Până la 15 pagini",
-      "Backup zilnic",
-      "SEO de bază configurat",
-      "GA4 integrat",
-      "1 intervenție tehnică/lună",
-      "Suport email 24h",
-      "SSL inclus",
-      "Hosting inclus",
-    ],
-    addonHrefs: {
-      "store-basic": "#",
-      "store-growth": "#",
-      "domain": "#",
-      "reporting": "#",
-    },
-  },
-  {
-    id: "core",
-    name: "Core",
-    desc: "Tot ce ai nevoie pentru a începe.",
-    monthly: 149,
-    annual: 1290,
-    twoYear: 2380,
-    highlight: false,
-    cta: "Încearcă gratuit 14 zile",
-    ctaHref: "/start",
-    color: "#6B7A9A",
-    promptPrice: "1.5 RON/prompt",
-    features: [
-      "1 generare site/lună",
-      "20 prompturi AI/lună",
-      "Până la 5 pagini",
-      "Backup săptămânal",
-      "Suport email 48h",
-      "SSL inclus",
-      "Hosting inclus",
-    ],
-    addonHrefs: {
-      "store-basic": "#",
-      "store-growth": "#",
-      "domain": "#",
-      "reporting": "#",
-    },
+    hrefs: {
+      "":                                        "#",
+      "store-basic":                             "#",
+      "store-growth":                            "#",
+      "domain":                                  "#",
+      "reporting":                               "#",
+      "store-basic+store-growth":                "#",
+      "domain+store-basic":                      "#",
+      "reporting+store-basic":                   "#",
+      "domain+store-growth":                     "#",
+      "reporting+store-growth":                  "#",
+      "domain+reporting":                        "#",
+      "domain+store-basic+store-growth":         "#",
+      "reporting+store-basic+store-growth":      "#",
+      "domain+reporting+store-basic":            "#",
+      "domain+reporting+store-growth":           "#",
+      "domain+reporting+store-basic+store-growth": "#",
+    } as Record<string, string>,
   },
 ];
 
@@ -161,6 +171,207 @@ function getSavingsPct(plan: typeof plans[0], billing: BillingPeriod) {
   return 0;
 }
 
+// ─── Individual plan card ─────────────────────────────────────────────────────
+function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPeriod }) {
+  const [activeAddons, setActiveAddons] = useState<AddonId[]>([]);
+
+  const toggle = (id: AddonId) =>
+    setActiveAddons((prev) =>
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
+    );
+
+  const key = comboKey(activeAddons);
+  const href = plan.hrefs[key] ?? "#";
+
+  const basePrice = getMonthlyPrice(plan, billing);
+  const addonTotal = activeAddons.reduce((sum, id) => {
+    const addon = ADDONS.find((a) => a.id === id);
+    return sum + (addon?.price ?? 0);
+  }, 0);
+  const totalPrice = basePrice + addonTotal;
+
+  const savingsRON = getSavingsRON(plan, billing);
+  const savingsPct = getSavingsPct(plan, billing);
+  const billedTotal =
+    billing === "annual" ? plan.annual : billing === "twoYear" ? plan.twoYear : null;
+
+  return (
+    <div
+      className={`relative rounded-2xl border-2 transition-all flex flex-col ${
+        plan.highlight
+          ? "border-[#0051CC] shadow-2xl shadow-[#0051CC]/10 bg-white md:scale-[1.02]"
+          : "border-[#EEF2FF] bg-white hover:border-[#0051CC]/30 hover:shadow-lg"
+      }`}
+    >
+      {plan.badge && (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
+          <span
+            className="inline-flex items-center bg-[#0051CC] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md"
+            style={{ fontFamily: "var(--font-body)", fontWeight: 700 }}
+          >
+            {plan.badge}
+          </span>
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="p-7 pb-5">
+        <h3
+          className="text-xl font-bold mb-1"
+          style={{ color: plan.color, fontFamily: "var(--font-display)", fontWeight: 700 }}
+        >
+          {plan.name}
+        </h3>
+        <p className="text-sm text-[#6B7A9A] mb-5" style={{ fontFamily: "var(--font-body)" }}>
+          {plan.desc}
+        </p>
+
+        {/* Price */}
+        <div className="flex items-baseline gap-1.5 mb-1">
+          <span
+            className="text-4xl font-bold text-[#0D1F5C] tabular-nums transition-all"
+            style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}
+          >
+            {totalPrice}
+          </span>
+          <span className="text-[#6B7A9A] text-sm">RON/lună</span>
+        </div>
+
+        {addonTotal > 0 && (
+          <p className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
+            {basePrice} plan + {addonTotal} add-on-uri
+          </p>
+        )}
+
+        {billedTotal && (
+          <p className="text-xs text-[#6B7A9A] mt-0.5" style={{ fontFamily: "var(--font-body)" }}>
+            {billedTotal.toLocaleString("ro-RO")} RON /{" "}
+            {billing === "annual" ? "an" : "2 ani"}, facturat{" "}
+            {billing === "annual" ? "anual" : "la 2 ani"}
+          </p>
+        )}
+
+        {savingsRON > 0 ? (
+          <div className="inline-flex items-center gap-1.5 mt-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+            Economisești{" "}
+            <span className="font-bold">{savingsRON.toLocaleString("ro-RO")} RON</span>
+            <span className="text-emerald-500 font-normal">({savingsPct}%)</span>
+          </div>
+        ) : (
+          <div className="h-7 mt-3" />
+        )}
+      </div>
+
+      {/* Features */}
+      <div className="px-7 pb-5">
+        <ul className="space-y-2.5">
+          {plan.features.map((feature) => (
+            <li key={feature} className="flex items-start gap-2.5">
+              <Check
+                size={14}
+                className="flex-shrink-0 mt-0.5"
+                style={{ color: plan.highlight ? "#0051CC" : "#00C2FF" }}
+              />
+              <span className="text-sm text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
+                {feature}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div
+          className="mt-5 py-3 border-y border-[#EEF2FF] text-xs text-[#6B7A9A]"
+          style={{ fontFamily: "var(--font-mono)" }}
+        >
+          Prompturi extra: {plan.promptPrice}
+        </div>
+      </div>
+
+      {/* Add-ons toggle section */}
+      <div className="px-7 pb-5">
+        <p
+          className="text-xs font-semibold uppercase tracking-widest text-[#6B7A9A] mb-3"
+          style={{ fontFamily: "var(--font-body)", letterSpacing: "0.08em" }}
+        >
+          Add-on-uri
+        </p>
+        <div className="space-y-2">
+          {ADDONS.map((addon) => {
+            const AddonIcon = addon.icon;
+            const active = activeAddons.includes(addon.id);
+            return (
+              <button
+                key={addon.id}
+                onClick={() => toggle(addon.id)}
+                className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border text-left transition-all ${
+                  active
+                    ? "bg-[#0051CC] border-[#0051CC] text-white shadow-md shadow-[#0051CC]/20"
+                    : "bg-white border-[#EEF2FF] text-[#0D1F5C] hover:border-[#0051CC]/40 hover:bg-[#EEF2FF]/50"
+                }`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <AddonIcon
+                    size={14}
+                    className={`flex-shrink-0 ${active ? "text-white" : "text-[#0051CC]"}`}
+                  />
+                  <span
+                    className={`text-sm font-medium truncate ${active ? "text-white" : "text-[#0D1F5C]"}`}
+                    style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
+                  >
+                    {addon.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span
+                    className={`text-xs font-semibold ${active ? "text-white/80" : "text-[#0051CC]"}`}
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    {addon.label}
+                  </span>
+                  <div
+                    className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                      active ? "bg-white/20" : "bg-[#EEF2FF]"
+                    }`}
+                  >
+                    {active ? (
+                      <X size={10} className="text-white" />
+                    ) : (
+                      <Plus size={10} className="text-[#0051CC]" />
+                    )}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="px-7 pb-7 mt-auto">
+        <a
+          href={href}
+          className={`flex w-full items-center justify-center gap-2 font-semibold text-sm py-3.5 px-6 rounded-xl transition-all ${
+            plan.highlight
+              ? "bg-[#0051CC] hover:bg-[#0D1F5C] text-white shadow-lg shadow-[#0051CC]/25 hover:shadow-[#0D1F5C]/25"
+              : plan.id === "pro"
+              ? "bg-[#0D1F5C] hover:bg-[#0051CC] text-white shadow-md hover:shadow-lg"
+              : "bg-[#EEF2FF] hover:bg-[#0D1F5C] text-[#0D1F5C] hover:text-white border border-[#0D1F5C]/10 hover:border-transparent"
+          }`}
+          style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
+        >
+          {plan.cta}
+          <ArrowRight size={15} />
+        </a>
+        {plan.id !== "pro" && (
+          <p className="text-center text-xs text-[#6B7A9A] mt-2" style={{ fontFamily: "var(--font-body)" }}>
+            Fără card • Anulezi oricând
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Main export ──────────────────────────────────────────────────────────────
 export default function PricingPlans() {
   const [billing, setBilling] = useState<BillingPeriod>("annual");
 
@@ -168,18 +379,11 @@ export default function PricingPlans() {
     <section className="py-16 bg-[#EEF2FF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Billing toggle ─────────────────────────────────────── */}
+        {/* Billing toggle */}
         <div className="flex items-center justify-center gap-2 mb-12 flex-wrap">
           {(["monthly", "annual", "twoYear"] as BillingPeriod[]).map((period) => {
-            const labels: Record<BillingPeriod, string> = {
-              monthly: "Lunar",
-              annual: "Anual",
-              twoYear: "2 Ani",
-            };
-            const badges: Partial<Record<BillingPeriod, string>> = {
-              annual: "−17%",
-              twoYear: "−21%",
-            };
+            const labels: Record<BillingPeriod, string> = { monthly: "Lunar", annual: "Anual", twoYear: "2 Ani" };
+            const badges: Partial<Record<BillingPeriod, string>> = { annual: "−17%", twoYear: "−21%" };
             const active = billing === period;
             return (
               <button
@@ -196,9 +400,7 @@ export default function PricingPlans() {
                 {badges[period] && (
                   <span
                     className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${
-                      active
-                        ? "bg-[#00C2FF] text-[#0D1F5C]"
-                        : "bg-[#00C2FF]/20 text-[#0051CC]"
+                      active ? "bg-[#00C2FF] text-[#0D1F5C]" : "bg-[#00C2FF]/20 text-[#0051CC]"
                     }`}
                   >
                     {badges[period]}
@@ -209,15 +411,12 @@ export default function PricingPlans() {
           })}
         </div>
 
-        {/* ── Founders banner ────────────────────────────────────── */}
+        {/* Founders banner */}
         <div className="mb-10 bg-gradient-to-r from-[#0D1F5C] to-[#0051CC] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <Zap size={22} className="text-[#00C2FF] flex-shrink-0 mt-0.5" />
             <div>
-              <p
-                className="text-white font-bold text-base leading-snug"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-              >
+              <p className="text-white font-bold text-base" style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}>
                 Ofertă Fondatori — prețuri blocate 24 de luni
               </p>
               <p className="text-white/70 text-sm mt-0.5" style={{ fontFamily: "var(--font-body)" }}>
@@ -225,217 +424,20 @@ export default function PricingPlans() {
               </p>
             </div>
           </div>
-          <Link
+          <a
             href="/start?founders=true"
             className="flex-shrink-0 inline-flex items-center gap-2 bg-[#00C2FF] hover:bg-white text-[#0D1F5C] font-semibold text-sm px-6 py-2.5 rounded-xl transition-all whitespace-nowrap shadow-lg shadow-black/20"
             style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
           >
-            Vreau oferta fondatori
-            <ArrowRight size={15} />
-          </Link>
+            Vreau oferta fondatori <ArrowRight size={15} />
+          </a>
         </div>
 
-        {/* ── Plan cards ─────────────────────────────────────────── */}
+        {/* Cards — Core | Growth | Pro */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-start">
-          {plans.map((plan) => {
-            const price = getMonthlyPrice(plan, billing);
-            const savingsRON = getSavingsRON(plan, billing);
-            const savingsPct = getSavingsPct(plan, billing);
-            const billedTotal =
-              billing === "annual"
-                ? plan.annual
-                : billing === "twoYear"
-                ? plan.twoYear
-                : null;
-
-            return (
-              <div
-                key={plan.id}
-                className={`relative rounded-2xl border-2 transition-all flex flex-col ${
-                  plan.highlight
-                    ? "border-[#0051CC] shadow-2xl shadow-[#0051CC]/10 bg-white md:scale-[1.02]"
-                    : "border-[#EEF2FF] bg-white hover:border-[#0051CC]/30 hover:shadow-lg"
-                }`}
-              >
-                {/* Recommended badge */}
-                {plan.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                    <span
-                      className="inline-flex items-center bg-[#0051CC] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md"
-                      style={{ fontFamily: "var(--font-body)", fontWeight: 700 }}
-                    >
-                      {plan.badge}
-                    </span>
-                  </div>
-                )}
-
-                {/* Card header */}
-                <div className="p-7 pb-5">
-                  <h3
-                    className="text-xl font-bold mb-1"
-                    style={{ color: plan.color, fontFamily: "var(--font-display)", fontWeight: 700 }}
-                  >
-                    {plan.name}
-                  </h3>
-                  <p className="text-sm text-[#6B7A9A] mb-5" style={{ fontFamily: "var(--font-body)" }}>
-                    {plan.desc}
-                  </p>
-
-                  {/* Price */}
-                  <div className="flex items-baseline gap-1.5 mb-1">
-                    <span
-                      className="text-4xl font-bold text-[#0D1F5C] tabular-nums"
-                      style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}
-                    >
-                      {price}
-                    </span>
-                    <span className="text-[#6B7A9A] text-sm">RON/lună</span>
-                  </div>
-
-                  {billedTotal && (
-                    <p className="text-xs text-[#6B7A9A]" style={{ fontFamily: "var(--font-body)" }}>
-                      {billedTotal.toLocaleString("ro-RO")} RON /{" "}
-                      {billing === "annual" ? "an" : "2 ani"}, facturat{" "}
-                      {billing === "annual" ? "anual" : "la 2 ani"}
-                    </p>
-                  )}
-
-                  {/* Savings pill */}
-                  {savingsRON > 0 ? (
-                    <div className="inline-flex items-center gap-1.5 mt-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
-                      <span>Economisești</span>
-                      <span className="font-bold">{savingsRON.toLocaleString("ro-RO")} RON</span>
-                      <span className="text-emerald-500 font-normal">({savingsPct}%)</span>
-                    </div>
-                  ) : (
-                    <div className="h-7 mt-3" />
-                  )}
-                </div>
-
-                {/* Features */}
-                <div className="px-7 pb-5">
-                  <ul className="space-y-2.5">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2.5">
-                        <Check
-                          size={14}
-                          className="flex-shrink-0 mt-0.5"
-                          style={{ color: plan.highlight ? "#0051CC" : "#00C2FF" }}
-                        />
-                        <span className="text-sm text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
-                          {feature}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Prompt price */}
-                  <div
-                    className="mt-5 py-3 border-y border-[#EEF2FF] text-xs text-[#6B7A9A]"
-                    style={{ fontFamily: "var(--font-mono)" }}
-                  >
-                    Prompturi extra: {plan.promptPrice}
-                  </div>
-                </div>
-
-                {/* Main CTA */}
-                <div className="px-7 pb-5">
-                  <Link
-                    href={plan.ctaHref}
-                    className={`flex w-full items-center justify-center gap-2 font-semibold text-sm py-3.5 px-6 rounded-xl transition-all ${
-                      plan.highlight
-                        ? "bg-[#0051CC] hover:bg-[#0D1F5C] text-white shadow-lg shadow-[#0051CC]/25 hover:shadow-[#0D1F5C]/25"
-                        : plan.id === "pro"
-                        ? "bg-[#0D1F5C] hover:bg-[#0051CC] text-white shadow-md hover:shadow-lg"
-                        : "bg-[#EEF2FF] hover:bg-[#0D1F5C] text-[#0D1F5C] hover:text-white border border-[#0D1F5C]/10 hover:border-transparent"
-                    }`}
-                    style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
-                  >
-                    {plan.cta}
-                    <ArrowRight size={15} />
-                  </Link>
-                  {plan.id !== "pro" && (
-                    <p
-                      className="text-center text-xs text-[#6B7A9A] mt-2"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      Fără card • Anulezi oricând
-                    </p>
-                  )}
-                </div>
-
-                {/* ── Add-ons ──────────────────────────────────────── */}
-                <div className="px-7 pb-7 mt-auto">
-                  <div className="border-t border-[#EEF2FF] pt-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      <PlusCircle size={14} className="text-[#0051CC]" />
-                      <span
-                        className="text-xs font-semibold uppercase tracking-widest text-[#6B7A9A]"
-                        style={{ fontFamily: "var(--font-body)", letterSpacing: "0.08em" }}
-                      >
-                        Add-on-uri disponibile
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      {ADDONS.map((addon) => {
-                        const AddonIcon = addon.icon;
-                        const href = plan.addonHrefs[addon.id as keyof typeof plan.addonHrefs];
-                        return (
-                          <div
-                            key={addon.id}
-                            className="rounded-xl border border-[#EEF2FF] bg-[#EEF2FF]/50 p-3.5"
-                          >
-                            <div className="flex items-start justify-between gap-3 mb-2">
-                              <div className="flex items-start gap-2">
-                                <AddonIcon size={14} className="text-[#0051CC] mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <p
-                                    className="text-xs font-semibold text-[#0D1F5C] leading-tight"
-                                    style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
-                                  >
-                                    {addon.name}
-                                  </p>
-                                  <p
-                                    className="text-xs text-[#0051CC] font-medium mt-0.5"
-                                    style={{ fontFamily: "var(--font-mono)" }}
-                                  >
-                                    {addon.price}
-                                  </p>
-                                </div>
-                              </div>
-                              {/* Activează button */}
-                              <a
-                                href={href}
-                                className="flex-shrink-0 inline-flex items-center gap-1 bg-white hover:bg-[#0051CC] text-[#0051CC] hover:text-white border border-[#0051CC]/30 hover:border-[#0051CC] text-xs font-semibold px-3 py-1.5 rounded-lg transition-all whitespace-nowrap shadow-sm"
-                                style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
-                                aria-label={`Activează ${addon.name} pentru planul ${plan.name}`}
-                              >
-                                Activează
-                                <ArrowRight size={10} />
-                              </a>
-                            </div>
-                            {/* Tags */}
-                            <div className="flex flex-wrap gap-1">
-                              {addon.tags.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="text-[10px] bg-white text-[#6B7A9A] px-2 py-0.5 rounded-full border border-[#EEF2FF]"
-                                  style={{ fontFamily: "var(--font-body)" }}
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {plans.map((plan) => (
+            <PlanCard key={plan.id} plan={plan} billing={billing} />
+          ))}
         </div>
       </div>
     </section>
