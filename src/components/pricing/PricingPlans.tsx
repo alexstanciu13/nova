@@ -30,7 +30,6 @@ const plans = [
     annual: 1290,
     twoYear: 2380,
     highlight: false,
-    cta: "Încearcă gratuit 14 zile",
     color: "#6B7A9A",
     promptPrice: "1.5 RON/prompt",
     features: [
@@ -70,7 +69,6 @@ const plans = [
     twoYear: 3980,
     highlight: true,
     badge: "Recomandat",
-    cta: "Încearcă gratuit 14 zile",
     color: "#0051CC",
     promptPrice: "1 RON/prompt",
     features: [
@@ -112,7 +110,6 @@ const plans = [
     annual: 3590,
     twoYear: 6700,
     highlight: false,
-    cta: "Contactează-ne",
     color: "#0D1F5C",
     promptPrice: "0.75 RON/prompt",
     features: [
@@ -215,21 +212,21 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
       )}
 
       {/* Header */}
-      <div className="p-7 pb-5">
+      <div className="p-5 pb-4">
         <h3
-          className="text-xl font-bold mb-1"
+          className="text-lg font-bold mb-0.5"
           style={{ color: plan.color, fontFamily: "var(--font-display)", fontWeight: 700 }}
         >
           {plan.name}
         </h3>
-        <p className="text-sm text-[#6B7A9A] mb-5" style={{ fontFamily: "var(--font-body)" }}>
+        <p className="text-xs text-[#6B7A9A] mb-3" style={{ fontFamily: "var(--font-body)" }}>
           {plan.desc}
         </p>
 
         {/* Price */}
-        <div className="flex items-baseline gap-1.5 mb-1">
+        <div className="flex items-baseline gap-1.5 mb-0.5">
           <span
-            className="text-4xl font-bold text-[#0D1F5C] tabular-nums transition-all"
+            className="text-3xl font-bold text-[#0D1F5C] tabular-nums transition-all"
             style={{ fontFamily: "var(--font-mono)", fontWeight: 700 }}
           >
             {totalPrice}
@@ -252,34 +249,34 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
         )}
 
         {savingsRON > 0 ? (
-          <div className="inline-flex items-center gap-1.5 mt-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+          <div className="inline-flex items-center gap-1.5 mt-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
             Economisești{" "}
             <span className="font-bold">{savingsRON.toLocaleString("ro-RO")} RON</span>
             <span className="text-emerald-500 font-normal">({savingsPct}%)</span>
           </div>
         ) : (
-          <div className="h-7 mt-3" />
+          <div className="h-6 mt-2" />
         )}
       </div>
 
       {/* Features */}
-      <div className="px-7 pb-5">
-        <ul className="space-y-2.5">
+      <div className="px-5 pb-4">
+        <ul className="space-y-1.5">
           {plan.features.map((feature) => (
-            <li key={feature} className="flex items-start gap-2.5">
+            <li key={feature} className="flex items-start gap-2">
               <Check
-                size={14}
+                size={13}
                 className="flex-shrink-0 mt-0.5"
                 style={{ color: plan.highlight ? "#0051CC" : "#00C2FF" }}
               />
-              <span className="text-sm text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
+              <span className="text-xs text-[#0D1F5C]" style={{ fontFamily: "var(--font-body)" }}>
                 {feature}
               </span>
             </li>
           ))}
         </ul>
         <div
-          className="mt-5 py-3 border-y border-[#EEF2FF] text-xs text-[#6B7A9A]"
+          className="mt-3 py-2 border-y border-[#EEF2FF] text-xs text-[#6B7A9A]"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           Prompturi extra: {plan.promptPrice}
@@ -287,14 +284,14 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
       </div>
 
       {/* Add-ons toggle section */}
-      <div className="px-7 pb-5">
+      <div className="px-5 pb-4">
         <p
-          className="text-xs font-semibold uppercase tracking-widest text-[#6B7A9A] mb-3"
+          className="text-xs font-semibold uppercase tracking-widest text-[#6B7A9A] mb-2"
           style={{ fontFamily: "var(--font-body)", letterSpacing: "0.08em" }}
         >
           Add-on-uri
         </p>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {ADDONS.map((addon) => {
             const AddonIcon = addon.icon;
             const active = activeAddons.includes(addon.id);
@@ -302,25 +299,25 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
               <button
                 key={addon.id}
                 onClick={() => toggle(addon.id)}
-                className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border text-left transition-all ${
+                className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg border text-left transition-all ${
                   active
                     ? "bg-[#0051CC] border-[#0051CC] text-white shadow-md shadow-[#0051CC]/20"
                     : "bg-white border-[#EEF2FF] text-[#0D1F5C] hover:border-[#0051CC]/40 hover:bg-[#EEF2FF]/50"
                 }`}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
                   <AddonIcon
-                    size={14}
+                    size={12}
                     className={`flex-shrink-0 ${active ? "text-white" : "text-[#0051CC]"}`}
                   />
                   <span
-                    className={`text-sm font-medium truncate ${active ? "text-white" : "text-[#0D1F5C]"}`}
+                    className={`text-xs font-medium truncate ${active ? "text-white" : "text-[#0D1F5C]"}`}
                     style={{ fontFamily: "var(--font-body)", fontWeight: 500 }}
                   >
                     {addon.name}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span
                     className={`text-xs font-semibold ${active ? "text-white/80" : "text-[#0051CC]"}`}
                     style={{ fontFamily: "var(--font-mono)" }}
@@ -328,14 +325,14 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
                     {addon.label}
                   </span>
                   <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                    className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
                       active ? "bg-white/20" : "bg-[#EEF2FF]"
                     }`}
                   >
                     {active ? (
-                      <X size={10} className="text-white" />
+                      <X size={9} className="text-white" />
                     ) : (
-                      <Plus size={10} className="text-[#0051CC]" />
+                      <Plus size={9} className="text-[#0051CC]" />
                     )}
                   </div>
                 </div>
@@ -346,10 +343,10 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
       </div>
 
       {/* CTA */}
-      <div className="px-7 pb-7 mt-auto">
+      <div className="px-5 pb-5 mt-auto">
         <a
           href={href}
-          className={`flex w-full items-center justify-center gap-2 font-semibold text-sm py-3.5 px-6 rounded-xl transition-all ${
+          className={`flex w-full items-center justify-center gap-2 font-semibold text-sm py-3 px-5 rounded-xl transition-all ${
             plan.highlight
               ? "bg-[#0051CC] hover:bg-[#0D1F5C] text-white shadow-lg shadow-[#0051CC]/25 hover:shadow-[#0D1F5C]/25"
               : plan.id === "pro"
@@ -358,14 +355,9 @@ function PlanCard({ plan, billing }: { plan: typeof plans[0]; billing: BillingPe
           }`}
           style={{ fontFamily: "var(--font-body)", fontWeight: 600 }}
         >
-          {plan.cta}
-          <ArrowRight size={15} />
+          Alege planul {plan.name}
+          <ArrowRight size={14} />
         </a>
-        {plan.id !== "pro" && (
-          <p className="text-center text-xs text-[#6B7A9A] mt-2" style={{ fontFamily: "var(--font-body)" }}>
-            Fără card • Anulezi oricând
-          </p>
-        )}
       </div>
     </div>
   );
