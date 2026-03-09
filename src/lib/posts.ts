@@ -264,7 +264,7 @@ export const posts: Post[] = [
       { type: "h2", text: "Ce a făcut diferența" },
       { type: "p", text: "Andreea a înțeles că site-ul singur nu ajunge. Combinând site-ul profesional cu GBP actualizat constant și solicitând activ recenzii la finalul fiecărei ședințe, a construit o prezență solidă în căutările locale în timp record." },
       { type: "h2", text: "Concluzie" },
-      { type: "p", text: "Un site profesional plus SEO local de bază poate transforma complet fluxul de clienți al unui salon de beauty. Andreea a investit ~40 de ore în primele 3 luni și acum salonul „se vinde singur" pe Google." },
+      { type: "p", text: "Un site profesional plus SEO local de bază poate transforma complet fluxul de clienți al unui salon de beauty. Andreea a investit ~40 de ore în primele 3 luni și acum salonul 'se vinde singur' pe Google." },
     ],
   },
 
@@ -326,7 +326,7 @@ export const posts: Post[] = [
   {
     slug: "cum-scrii-pagina-despre-noi-care-vinde",
     category: "Ghiduri Business",
-    title: "Cum scrii o pagină „Despre noi" care câștigă încrederea clienților",
+    title: "Cum scrii o pagina Despre noi care castiga increderea clientilor",
     excerpt: "Pagina Despre noi e a doua cea mai vizitată pagină de pe orice site de afaceri. Majoritatea o irosesc cu text corporatist. Tu nu trebuie să faci la fel.",
     readTime: "5 min",
     date: "12 Dec 2025",
