@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, Shield, Clock, Headphones, Zap, Globe, BarChart3, Star } from "lucide-react";
-import NovaIcon from "@/components/NovaIcon";
 
 export const metadata: Metadata = {
   title: "Încearcă nova gratuit 14 zile — Creează-ți site-ul WordPress cu AI",
@@ -36,16 +35,6 @@ export default function StartPage() {
             <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-[#00C2FF]/10 rounded-full blur-[60px]" />
           </div>
           <div className="relative max-w-md mx-auto lg:mx-0 lg:pl-8">
-            <Link href="/" className="flex items-center gap-2 mb-12">
-              <NovaIcon size={32} variant="light" />
-              <span
-                className="text-white text-xl"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.03em" }}
-              >
-                nova
-              </span>
-            </Link>
-
             <h1
               className="text-3xl sm:text-4xl font-extrabold text-white mb-5 leading-tight"
               style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.02em" }}
