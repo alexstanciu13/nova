@@ -3,7 +3,7 @@
 interface NovaIconProps {
   size?: number;
   className?: string;
-  variant?: "dark" | "light" | "cyan";
+  variant?: "dark" | "light" | "cyan" | "white";
 }
 
 export default function NovaIcon({ size = 32, className = "", variant = "dark" }: NovaIconProps) {
@@ -11,6 +11,7 @@ export default function NovaIcon({ size = 32, className = "", variant = "dark" }
     dark: { bg: "#0D1F5C", star: "#FFFFFF" },
     light: { bg: "#FFFFFF", star: "#0D1F5C" },
     cyan: { bg: "#00C2FF", star: "#0D1F5C" },
+    white: { bg: "#FFFFFF", star: "transparent" },
   };
   const { bg, star } = fills[variant];
 

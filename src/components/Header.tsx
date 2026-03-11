@@ -44,10 +44,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 lg:h-18">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <NovaIcon size={32} variant="dark" />
+            <NovaIcon size={32} variant={dark ? "dark" : "white"} />
             <span
-              className="font-display font-800 text-xl tracking-tight text-[#0D1F5C]"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 800, letterSpacing: "-0.03em" }}
+              className="font-display font-800 text-xl tracking-tight"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                color: dark ? "#0D1F5C" : "#FFFFFF",
+              }}
             >
               nova
             </span>
