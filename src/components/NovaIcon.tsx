@@ -11,7 +11,7 @@ export default function NovaIcon({ size = 32, className = "", variant = "dark" }
     dark: { bg: "#0D1F5C", star: "#FFFFFF" },
     light: { bg: "#FFFFFF", star: "#0D1F5C" },
     cyan: { bg: "#00C2FF", star: "#0D1F5C" },
-    white: { bg: "#FFFFFF", star: "transparent" },
+    white: { bg: "#FFFFFF", star: "#060D1A" },
   };
   const { bg, star } = fills[variant];
 
